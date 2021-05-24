@@ -5,6 +5,7 @@
 
 #define LED_1 17
 
+// 如果定义了USE_AS_GPIO就是表明使用传统方式来操作GPIO
 #define USE_AS_GPIO
 
 int main(void)
@@ -24,6 +25,7 @@ int main(void)
 #endif
     while (true) {
 #if !defined(USE_AS_GPIO)
+        // 任务触发引脚状态翻转
         nrf_drv_gpiote_out_task_trigger(LED_1);
         nrf_delay_ms(150);
 #else

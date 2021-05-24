@@ -3,7 +3,7 @@
 ##############################################################################
 cmake_minimum_required(VERSION 3.15)
 
-set(PROJECT_NA "gpiote")
+set(PROJECT_NA "gpiote_out")
 project(ble_app_${PROJECT_NA} C ASM)
 
 # set build type = Debug mode
