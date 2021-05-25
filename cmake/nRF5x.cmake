@@ -312,6 +312,14 @@ macro(nRF5x_addAppFIFO)
 endmacro(nRF5x_addAppFIFO)
 
 # adds app-level Timer libraries
+macro(nRF5x_addNrfxTimer)
+    list(APPEND SDK_SOURCE_FILES
+            "${NRF5_SDK_PATH}/modules/nrfx/drivers/src/nrfx_timer.c"
+            )
+    message(STATUS "Including nrfx Timer") 
+endmacro(nRF5x_addNrfxTimer)
+
+# adds nrfx Timer libraries
 macro(nRF5x_addAppTimer)
     list(APPEND SDK_SOURCE_FILES
             "${NRF5_SDK_PATH}/components/libraries/timer/app_timer.c"
