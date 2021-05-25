@@ -570,3 +570,11 @@ macro(nRF5x_addBLEService NAME)
     endif()
 
 endmacro(nRF5x_addBLEService)
+
+macro(nRF5x_addNrfxPPI)
+    list(APPEND SDK_SOURCE_FILES
+        "${NRF5_SDK_PATH}/modules/nrfx/drivers/src/nrfx_ppi.c"
+        "${NRF5_SDK_PATH}/integration/nrfx/legacy/nrf_drv_ppi.c"
+    )
+    message(STATUS "Including nrfx ppi") 
+endmacro(nRF5x_addNrfxPPI)

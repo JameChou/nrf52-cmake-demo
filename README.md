@@ -23,6 +23,6 @@ add_definitions(-DNRF52 -DNRF52832 -DNRF52832_XXAA -DNRF52_PAN_74 -DNRF52_PAN_64
 * [GPIOTE输出](./projects/gpiote_out)
 * [GPIOTE输入](./projects/gpiote_in)
 * [GPIOTE PORT模式](./projects/gpiote_port)
-* [UART](./projects/uart)]
+* [UART](./projects/uart)
 * [Timer定时器](./projects/timer)
 * [Counter计数器](./projects/counter)
