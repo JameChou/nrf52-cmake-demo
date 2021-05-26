@@ -592,3 +592,9 @@ macro(nRF5x_addWDT)
         "${NRF5_SDK_PATH}/integration/nrfx/legacy/nrf_drv_clock.c"
     )
 endmacro(nRF5x_addWDT)
+
+macro(nRF5x_addSAADC)
+    list(APPEND SDK_SOURCE_FILES
+        "${NRF5_SDK_PATH}/modules/nrfx/drivers/src/nrfx_saadc.c"
+    )
+endmacro(nRF5x_addSAADC)

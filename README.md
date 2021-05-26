@@ -31,3 +31,6 @@ add_definitions(-DNRF52 -DNRF52832 -DNRF52832_XXAA -DNRF52_PAN_74 -DNRF52_PAN_64
 * [PPI组](./projects/ppi_group)
 * [NVMC](./projects/nvmc)
 * [WDT](./projects/wdt)
+* [SAADC阻塞式非差分采样](./projects/saadc)
+* [SAADC阻塞式差分采样](./projects/saadc_differential)
+* [SAADC非阻塞式双缓存](./projects/saadc_unbloack_cache)
