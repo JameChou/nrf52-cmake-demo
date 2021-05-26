@@ -578,3 +578,10 @@ macro(nRF5x_addNrfxPPI)
     )
     message(STATUS "Including nrfx ppi") 
 endmacro(nRF5x_addNrfxPPI)
+
+macro(nRF5x_addNvmc)
+    list(APPEND SDK_SOURCE_FILES
+        "${NRF5_SDK_PATH}/modules/nrfx/hal/nrf_nvmc.c"
+    )
+    message(STATUS "Including nrf nvmc hal") 
+endmacro(nRF5x_addNvmc)
