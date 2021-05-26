@@ -35,3 +35,4 @@ add_definitions(-DNRF52 -DNRF52832 -DNRF52832_XXAA -DNRF52_PAN_74 -DNRF52_PAN_64
 * [SAADC阻塞式差分采样](./projects/saadc_differential)
 * [SAADC非阻塞式双缓存](./projects/saadc_unblock_cache)
 * [SAADC门限监测](./projects/saadc_limit)
+* [SOC温度监测](./projects/soc_temp)
