@@ -585,3 +585,10 @@ macro(nRF5x_addNvmc)
     )
     message(STATUS "Including nrf nvmc hal") 
 endmacro(nRF5x_addNvmc)
+
+macro(nRF5x_addWDT)
+    list(APPEND SDK_SOURCE_FILES
+        "${NRF5_SDK_PATH}/modules/nrfx/drivers/src/nrfx_wdt.c"
+        "${NRF5_SDK_PATH}/integration/nrfx/legacy/nrf_drv_clock.c"
+    )
+endmacro(nRF5x_addWDT)

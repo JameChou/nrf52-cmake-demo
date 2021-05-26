@@ -29,3 +29,5 @@ add_definitions(-DNRF52 -DNRF52832 -DNRF52832_XXAA -DNRF52_PAN_74 -DNRF52_PAN_64
 * [PPI](./projects/ppi)
 * [PPI次级任务](./projects/ppi_sec_task)
 * [PPI组](./projects/ppi_group)
+* [NVMC](./projects/nvmc)
+* [WDT](./projects/wdt)
