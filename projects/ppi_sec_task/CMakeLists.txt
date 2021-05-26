@@ -3,7 +3,7 @@
 ##############################################################################
 cmake_minimum_required(VERSION 3.15)
 
-set(PROJECT_NA "ppi")
+set(PROJECT_NA "ppi_sec_task")
 project(ble_app_${PROJECT_NA} C ASM)
 
 # set build type = Debug mode
