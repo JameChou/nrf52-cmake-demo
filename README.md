@@ -18,6 +18,8 @@ add_definitions(-DNRF52 -DNRF52832 -DNRF52832_XXAA -DNRF52_PAN_74 -DNRF52_PAN_64
 
 ## demo
 
+-- 基本功能
+
 * [闪烁LED](./projects/blinky)
 * [开发板便捷工具](./projects/board)
 * [GPIOTE输出](./projects/gpiote_out)
@@ -36,3 +38,12 @@ add_definitions(-DNRF52 -DNRF52832 -DNRF52832_XXAA -DNRF52_PAN_74 -DNRF52_PAN_64
 * [SAADC非阻塞式双缓存](./projects/saadc_unblock_cache)
 * [SAADC门限监测](./projects/saadc_limit)
 * [SOC温度监测](./projects/soc_temp)
+
+-- BLE相关
+
+---- 从机(peripheral)
+* [BLE基本功能](./projects/ble_peripheral_basic)
+
+---- 主机(center)
+
+-- ANT+ 2.4G传输相关
