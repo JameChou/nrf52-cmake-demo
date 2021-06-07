@@ -45,6 +45,10 @@ void ble_stack_init(void)
     err_code = nrf_sdh_ble_default_cfg_set(APP_BLE_CONN_CFG_TAG, &ram_start);
     APP_ERROR_CHECK(err_code);
 
+    // 使能ble协议栈
+    err_code = nrf_sdh_ble_enable(&ram_start);
+    APP_ERROR_CHECK(err_code);
+
     // 注册BLE事件回调函数
     NRF_SDH_BLE_OBSERVER(m_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, NULL);
 }
