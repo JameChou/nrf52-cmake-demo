@@ -6,7 +6,6 @@
 #include "tri_app_ble.h"
 #include "tri_app_leds.h"
 #include "tri_app_power.h"
-#include "tri_app_qwr.h"
 #include "tri_app_timer.h"
 
 static void idle_state_handle();

@@ -8,8 +8,6 @@
 #include "ble_advertising.h"
 #include "ble_conn_params.h"
 
-extern uint16_t m_conn_handle;
-
 /**
  * 初始化BLE协议栈
  */
@@ -68,6 +66,9 @@ void advertising_init(void);
  * 广播开始
  */
 void advertising_start(void);
+
+void nrf_qwr_error_handler(uint32_t nrf_error);
+void services_init(void);
 
 
 #endif //BLE_APP_BLE_PERIPHERAL_BASIC_TRI_APP_BLE_H

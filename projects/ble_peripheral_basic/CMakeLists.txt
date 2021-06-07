@@ -133,7 +133,6 @@ list(APPEND SOURCE_FILES
         "${CMAKE_SOURCE_DIR}/components/tri_app_leds.c"
         "${CMAKE_SOURCE_DIR}/components/tri_app_log.c"
         "${CMAKE_SOURCE_DIR}/components/tri_app_power.c"
-        "${CMAKE_SOURCE_DIR}/components/tri_app_qwr.c"
         "${CMAKE_SOURCE_DIR}/components/tri_app_timer.c"
 )
 ##############################################################################
