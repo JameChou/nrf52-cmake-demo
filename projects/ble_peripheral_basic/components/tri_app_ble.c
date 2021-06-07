@@ -32,7 +32,7 @@ NRF_BLE_GATT_DEF(m_gatt);
 NRF_BLE_QWR_DEF(m_qwr);
 BLE_ADVERTISING_DEF(m_advertising);
 
-static void ble_stack_init(void)
+void ble_stack_init(void)
 {
     ret_code_t err_code;
     // 请求使能SoftDevice，该函数会根据sdk_config.h文件中低频时钟的设置来配置低频时钟
@@ -49,7 +49,7 @@ static void ble_stack_init(void)
     NRF_SDH_BLE_OBSERVER(m_observer, APP_BLE_OBSERVER_PRIO, ble_evt_handler, NULL);
 }
 
-static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
+void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
 {
     ret_code_t err_code = NRF_SUCCESS;
 
@@ -111,19 +111,19 @@ static void ble_evt_handler(ble_evt_t const * p_ble_evt, void * p_context)
     }
 }
 
-static void gatt_init(void)
+void gatt_init(void)
 {
     // 初始化GATT程序模块
     ret_code_t err_code = nrf_ble_gatt_init(&m_gatt, NULL);
     APP_ERROR_CHECK(err_code);
 }
 
-static void conn_params_error_handler(uint32_t nrf_error)
+void conn_params_error_handler(uint32_t nrf_error)
 {
     APP_ERROR_HANDLER(nrf_error);
 }
 
-static void on_conn_params_evt(ble_conn_params_evt_t * p_evt)
+void on_conn_params_evt(ble_conn_params_evt_t * p_evt)
 {
     ret_code_t err_code;
     // 判断事件类型，根据事件类型执行动作
@@ -138,7 +138,7 @@ static void on_conn_params_evt(ble_conn_params_evt_t * p_evt)
     }
 }
 
-static void conn_params_init(void)
+void conn_params_init(void)
 {
     ret_code_t err_code;
     ble_conn_params_init_t cp_init;
@@ -157,7 +157,7 @@ static void conn_params_init(void)
     APP_ERROR_CHECK(err_code);
 }
 
-static void gap_params_init(void)
+void gap_params_init(void)
 {
     ret_code_t                  err_code;
     ble_gap_conn_params_t       gap_conn_params; // 定义连接参数结构体变量
@@ -187,7 +187,7 @@ static void gap_params_init(void)
     APP_ERROR_CHECK(err_code);
 }
 
-static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
+void on_adv_evt(ble_adv_evt_t ble_adv_evt)
 {
     ret_code_t err_code;
     switch (ble_adv_evt) {
@@ -195,11 +195,13 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
         case BLE_ADV_EVT_FAST:
             NRF_LOG_INFO("Fast advertising.");
             err_code = bsp_indication_set(BSP_INDICATE_ADVERTISING);
+            APP_ERROR_CHECK(err_code);
             break;
         // 广播IDEL事件: 广播超时后会触发此事件
         case BLE_ADV_EVT_IDLE:
             NRF_LOG_INFO("Advertising idle.");
             err_code = bsp_indication_set(BSP_INDICATE_IDLE);
+            APP_ERROR_CHECK(err_code);
             break;
 
         default:
@@ -207,7 +209,7 @@ static void on_adv_evt(ble_adv_evt_t ble_adv_evt)
     }
 }
 
-static void advertising_init(void)
+void advertising_init(void)
 {
     ret_code_t err_code;
     ble_advertising_init_t init;
@@ -230,7 +232,7 @@ static void advertising_init(void)
     ble_advertising_conn_cfg_tag_set(&m_advertising, APP_BLE_CONN_CFG_TAG);
 }
 
-static void advertising_start(void)
+void advertising_start(void)
 {
     ret_code_t err_code = ble_advertising_start(&m_advertising, BLE_ADV_MODE_FAST);
     APP_ERROR_CHECK(err_code);

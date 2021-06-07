@@ -3,7 +3,7 @@
 #include "nrf_log_ctrl.h"
 #include "nrf_log_default_backends.h"
 
-static void app_log_init(void)
+void app_log_init(void)
 {
     // 初始化log程序模块
     ret_code_t err_code = NRF_LOG_INIT(NULL);

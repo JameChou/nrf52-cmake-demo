@@ -127,21 +127,16 @@ add_custom_target(FLASH_SOFTDEVICE ALL
 ##############################################################################
 #  application components setup
 ##############################################################################
-add_library(tri_app_ble     STATIC components/tri_app_ble.c)
-add_library(tri_app_leds    STATIC components/tri_app_leds.c)
-add_library(tri_app_log     STATIC components/tri_app_log.c)
-add_library(tri_app_power   STATIC components/tri_app_power.c)
-add_library(tri_app_timer   STATIC components/tri_app_timer.c)
-add_library(tri_app_qwr     STATIC components/tri_app_qwr.c)
-
-target_include_directories(tri_app_ble      PUBLIC  ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(tri_app_leds     PUBLIC  ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(tri_app_log      PUBLIC  ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(tri_app_power    PUBLIC  ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(tri_app_timer    PUBLIC  ${PROJECT_SOURCE_DIR}/include)
-target_include_directories(tri_app_qwr      PUBLIC  ${PROJECT_SOURCE_DIR}/include)
-
- ##############################################################################
+include_directories("${CMAKE_SOURCE_DIR}/include")
+list(APPEND SOURCE_FILES
+        "${CMAKE_SOURCE_DIR}/components/tri_app_ble.c"
+        "${CMAKE_SOURCE_DIR}/components/tri_app_leds.c"
+        "${CMAKE_SOURCE_DIR}/components/tri_app_log.c"
+        "${CMAKE_SOURCE_DIR}/components/tri_app_power.c"
+        "${CMAKE_SOURCE_DIR}/components/tri_app_qwr.c"
+        "${CMAKE_SOURCE_DIR}/components/tri_app_timer.c"
+)
+##############################################################################
 # SOURCE CODE
 ##############################################################################
 list(APPEND SOURCE_FILES "src/main.c")
@@ -150,15 +145,6 @@ list(APPEND SOURCE_FILES "src/main.c")
 # EXECUTABLES
 ##############################################################################
 nRF5x_addExecutable(${PROJECT_NAME} "${SOURCE_FILES}")
-
-target_link_libraries(${PROJECT_NAME}
-        PRIVATE
-            tri_app_log
-            tri_app_leds
-            tri_app_power
-            tri_app_timer
-            tri_app_qwr
-)
 
 ##############################################################################
 # .hex, .map and .bin file 

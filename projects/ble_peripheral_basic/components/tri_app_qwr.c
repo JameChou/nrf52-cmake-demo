@@ -2,12 +2,12 @@
 #include "app_error.h"
 #include "tri_app_qwr.h"
 
-static void nrf_qwr_error_handler(uint32_t nrf_error)
+void nrf_qwr_error_handler(uint32_t nrf_error)
 {
     APP_ERROR_HANDLER(nrf_error);
 }
 
-static void services_init(void)
+void services_init(void)
 {
     ret_code_t err_code;
 

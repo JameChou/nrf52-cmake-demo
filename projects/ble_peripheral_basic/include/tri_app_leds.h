@@ -4,6 +4,6 @@
 /**
  * 初始化led相关
  */
-static void leds_init(void);
+void leds_init(void);
 
 #endif //BLE_APP_BLE_PERIPHERAL_BASIC_TRI_APP_LEDS_H

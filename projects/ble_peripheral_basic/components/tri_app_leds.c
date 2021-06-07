@@ -17,7 +17,7 @@
 
 #endif
 
-static void leds_init(void)
+void leds_init(void)
 {
 #if defined(USE_BOARD)
     ret_code_t err_code;
