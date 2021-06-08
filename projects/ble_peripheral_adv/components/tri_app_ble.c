@@ -10,7 +10,7 @@
 #include "tri_app_ble.h"
 #include "app_timer.h"
 
-#define DEVICE_NAME                     "Tri Speed Sensor"                        // 设备名称
+#define DEVICE_NAME                     "James' BLE"                        // 设备名称
 #define FIRST_CONN_PARAMS_UPDATE_DELAY  APP_TIMER_TICKS(5000)               // 定义首次调用sd_ble_gap_conn_param_update()函数更新连接参数延迟时间（5秒)
 #define NEXT_CONN_PARAMS_UPDATE_DELAY   APP_TIMER_TICKS(30000)              // 定义每次调用sd_ble_gap_conn_param_update()函数更新连接参数的间隔时间（30秒)
 #define MAX_CONN_PARAMS_UPDATE_COUNT    3                                   // 定义放弃连接参数协商前尝试连接参数协商的最大次数（3次）
@@ -174,8 +174,9 @@ void gap_params_init(void)
     APP_ERROR_CHECK(err_code);
 
     // 如果需要设置外观特征，在这里使用如下代码设置
-    err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_GENERIC_RUNNING_WALKING_SENSOR);
-    APP_ERROR_CHECK(err_code);
+    /*
+    err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_x);
+    APP_ERROR_CHECK(err_code); */
 
     // 设置首选连接参数，设置前先清零gap_conn_params
     memset(&gap_conn_params, 0, sizeof(gap_conn_params));
