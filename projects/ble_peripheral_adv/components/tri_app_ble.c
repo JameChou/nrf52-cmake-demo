@@ -32,6 +32,14 @@ NRF_BLE_GATT_DEF(m_gatt);
 NRF_BLE_QWR_DEF(m_qwr);
 BLE_ADVERTISING_DEF(m_advertising);
 
+/*
+ * ADV广播测试实验程序
+ *
+ * 0 -> 随机静态地址读写实验
+ *
+ */
+#define ADDRESS_TEST 1
+
 void ble_stack_init(void)
 {
     ret_code_t err_code;
@@ -189,6 +197,56 @@ void gap_params_init(void)
     // 调用协议栈API来配置GAP参数
     err_code = sd_ble_gap_ppcp_set(&gap_conn_params);
     APP_ERROR_CHECK(err_code);
+
+
+#if ADDRESS_TEST == 0
+    // 定义地址结构体变量my_addr
+    static ble_gap_addr_t my_addr;
+
+    /*--------------设置设备地址: 随机静态地址----------------*/
+    my_addr.addr[0] = 0x11;
+    my_addr.addr[1] = 0x22;
+    my_addr.addr[2] = 0x33;
+    my_addr.addr[3] = 0x44;
+    my_addr.addr[4] = 0x55;
+    // 注意地址最高位必须为1,其它所有的位不能同时为0，也不能同时为1
+    my_addr.addr[5] = 0xFE;
+    // 地址类型设置为随机静态地址
+    my_addr.addr_type = BLE_GAP_ADDR_TYPE_RANDOM_STATIC;
+    // 写入地址
+    err_code = sd_ble_gap_addr_set(&my_addr);
+    if (err_code != NRF_SUCCESS) {
+        NRF_LOG_INFO("Set address failed!");
+    }
+
+    err_code = sd_ble_gap_addr_get(&my_addr);
+    if (err_code == NRF_SUCCESS) {
+        NRF_LOG_INFO("Address Type: %02X\r\n", my_addr.addr_type);
+
+        NRF_LOG_INFO("Address: %02X:%02X:%02X:%02X:%02X:%02X\r\n",
+                        my_addr.addr[0], my_addr.addr[1],
+                        my_addr.addr[2], my_addr.addr[3],
+                        my_addr.addr[4], my_addr.addr[5]
+                     );
+    }
+
+#elif ADDRESS_TEST == 1
+    static ble_gap_privacy_params_t my_addr = {0};
+
+    // 初始化地址模式、地址类型和循环周期，私有地址由协议栈自动生成
+    my_addr.privacy_mode = BLE_GAP_PRIVACY_MODE_DEVICE_PRIVACY;
+    my_addr.private_addr_type = BLE_GAP_ADDR_TYPE_RANDOM_PRIVATE_NON_RESOLVABLE;
+
+    // 地址循环周期设置为15秒，蓝牙内核协议推荐值是15分钟。
+    my_addr.private_addr_cycle_s = 15;
+    my_addr.p_device_irk = NULL;
+
+    err_code = sd_ble_gap_privacy_set(&my_addr);
+
+    if (err_code != NRF_SUCCESS) {
+        NRF_LOG_INFO("")
+    }
+#endif
 }
 
 void on_adv_evt(ble_adv_evt_t ble_adv_evt)
