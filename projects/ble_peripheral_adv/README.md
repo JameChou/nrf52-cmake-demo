@@ -137,3 +137,150 @@ MSB => company_id(24 bits)
 不可解析私有地址相当于周期性改变的随机静态地址，不可解析私有地址一直在变化， 并且该地址是个随机数，没有提供任何可解析的信息，因此，很难通过跟踪地址来跟踪设备， 所以具有很高的安全性。但是因为地址一直变化，又没有可解析的信息，这就导致受信任的 设备也没法分辨该地址的真实身份。
 
 由此可见，不可解析私有地址在隐私上“敌我”不分，不管是谁，统统让你无法分辨我 的真实身份。因此不可解析私有地址在实际应用中使用的不多。
+
+```c
+static ble_gap_privacy_params_t my_addr = {0};
+
+// 初始化地址模式、地址类型和循环周期，私有地址由协议栈自动生成
+my_addr.privacy_mode = BLE_GAP_PRIVACY_MODE_DEVICE_PRIVACY;
+my_addr.private_addr_type = BLE_GAP_ADDR_TYPE_RANDOM_PRIVATE_NON_RESOLVABLE;
+
+// 地址循环周期设置为15秒，蓝牙内核协议推荐值是15分钟。
+my_addr.private_addr_cycle_s = 15;
+my_addr.p_device_irk = NULL;
+
+err_code = sd_ble_gap_privacy_set(&my_addr);
+
+if (err_code != NRF_SUCCESS) {
+NRF_LOG_INFO("")
+}
+#endif
+```
+
+### 本地设备名称
+
+本地设备名称(Local Name)有如下两种类型
+* 完整的本地名称(Complete local name): 不能截断
+* 裁剪的本地名称(Shortened local name): 可以被截断，截取内容必须是从名称的起始位置开始连续的字符。
+
+设备名称示例:
+完整的本地设备名称是: BT_Device_Name，裁剪的本地设备名称可以是BT_Device，也可以是BT_Dev等但不能是T_DEV(因为T_DEV不是从名称的起始位置开始的)。
+
+应用场景:
+* 完整的本地名称: 设备愿意对外展示全部的设备名称，并且设备名称不长，广播包可以容纳。
+* 裁剪的本地名称: 设备名称很长，一个广播包无法容纳，或者我们不想在广播的时候对外展示全部的设备名称，这时可以使用裁剪的设备名称，当连接建立后，主机可以通过
+读GAP设备名称特征来获取完整的设备名称。
+  
+### 外观
+外观是GAP服务的一个特征，外观的值是在GAP初始化函数里面设备的，广播初始化时只能选择广播包是否包含外观，而不能设置外观的值。所以，配置外观的步骤是首先在GAP
+初始化函数中根据实际应用设置外观特征的值，然后在广播初始化函数中设置包含或不包含外观。
+
+```c
+// 设置GAP的外观属性
+// 如果需要设置其他外观可以查看ble_types.h这个头文件
+err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_GENERIC_RUNNING_WALKING_SENSOR);
+APP_ERROR_CHECK(err_code);
+```
+可以通过查看`ble_types.h`这个文件，来查看相应的外观值。
+
+### Flags
+Flags是位字段的序列，当其中任何一个位不为零且广播可连接时广播包中应包含flags,否则，Flags可以被忽略。Flags只能包含在广播包中，扫描响应包中不能包含Flags。
+Flags的作用是在广播包中加入如下标志：
+* 有限可发现模式。
+* 一般可发现模式。
+* 不支持BR/EDR。
+* 设备同时支持LE和BR/EDR(控制器)。
+* 设备同时支持LE和BR/EDR(主机)。
+
+有了这些标志，当设备被扫描到后，对端设备即可根据这些标志执行相应动作，如Flags指示了设备不支持BR/EDR，对端设备扫描到该设备后，即可知道此设置仅支持LE，不支持
+传统蓝牙。Flags的格式如下表:
+<table>
+   <thead>
+      <tr>
+         <th>数据类型</th>
+         <th>位</th>
+         <th>描述</th>
+      </tr>
+   </thead>
+   <tbody>
+      <tr>
+         <td rowspan="7">Flags</td>
+         <td>0</td>
+         <td>有限可发现模式</td>
+      </tr>
+      <tr>
+         <td>1</td>
+         <td>一般可发现模式</td>
+      </tr>
+      <tr>
+         <td>2</td>
+         <td>不支持BR/EDR</td>
+      </tr>
+      <tr>
+         <td>3</td>
+         <td>设备同时支持LE和BR/EDR(控制器)。</td>
+      </tr>
+      <tr>
+         <td>4</td>
+         <td>设备同时支持LE和BR/EDR(主机)。</td>
+      </tr>
+      <tr>
+         <td>5-7</td>
+         <td>保留</td>
+      </tr>
+   </tbody>
+</table>
+
+#### 有限可发现模式和一般可发现模式的区别
+有限可发现模式有时间的限制，一般维持的时间是30s，而一般可发现模式没有时间的限制，有限可发现模式的广播间隔比一般可发现模式小。
+
+从时间的限制上，我们可以看出有限可发现模式对连接的迫切性和目的性比一般可发现模式高，一个处于有限可发现模式的设备正在广播，那么他一定是刚被用户操作过并且希望被连接。
+
+#### 不支持BD/EDR
+不支持BD/EDR表示设备是单模设备，公支持蓝牙低功耗，不支持传统蓝牙。
+
+我们项目中是将Flags定义了一般可发现模式，并且仅支持LE模式。
+```c
+ble_advertising_init_t init;
+memset(&init, 0, sizeof(init));
+
+init.advdata.flags = BLE_GAP_ADV_FLAGS_LE_ONLY_GENERAL_DISC_MODE;   // Flag: 一般为可发现模式，不支持BR/EDR
+```
+
+### 发射功率等级
+
+#### 发射功率等级的定义 
+发射功率等级(TX Power Level)，指的是传输该广播包时使用的发射功率值。 长度1个字节，单位是dBm。发射功率等级定义如下:
+
+|数据类型|描述|
+|:-----:|:-----|
+|发射功率等级(TX Power Level)|大小:1字节。<br/>范围: -127至+127dBm。|
+
+发射功率等级可以用来计算伙路径损耗
+
+pathloss = TX Power Level - RSSI。
+
+### 服务的UUID
+#### UUID
+广播数据中，一般会包含一个服务UUID列表，用以展示自己支持的服务，但是GAP和GATT服务的UUID不能加到广播包中。广播中可以根据自身的情况包含一部分服务的UUID
+或者包含所有服务的UUID。部分UUID列表和完整的服务UUID列表同时只能用一种，不能在广播数据中同时包含这两种。
+
+什么时候使用部分服务UUID列表呢?
+* 广播数据无法容纳全部服务的UUID
+* 设备不想在广播阶段对外展示其所支持的全部的服务。
+
+#### What's UUID?
+UUID(通用唯一识别码: Universally Unique Identifier)是一个128位的数字，用来标识伙属性类型。服务也是一种属性，所以需要UUID来标志。
+1. 16位的UUID
+因为128位的UUID相当长，设备间为了识别数据的类型需要发送长达16个字节的数据。为了提高传输效率，SIG定义了一个"UUID基数"，结合一个较短的16位数使用。
+   
+2. UUID分为标准的UUID和厂商自定义的UUID
+* 标准的UUID: 由SIG发布，采用UUID基数+16位UUID的形式，如心率服务的UUID是0x180D，使用的基数是: 00000000-0000-1000-8000 - 00805F9B34FB。
+* 厂商自定义的UUID: 同样采用UUID基数+ 16位UUID的形式，由厂商定义，如BLE串口服务的UUID是0x0001，使用的UUID基数是6E400001-B5A3-F393-E0A9 - E50E24DCCA9E。
+
+为了方便管理，增加UUID的可读性，蓝牙低功耗使用的那部分UUID被分为下列几组:
+* 0x1800~0x26FF: 用作服务类能用唯一标识码。
+* 0x2700~0x27FF: 用于标识计量单位。
+* 0x2800~0x28FF: 用于区分属性类型。
+* 0x2900~0x29FF: 用作特征描述。
+* 0x2A00~0x7FFF: 用于区分特征类型。
