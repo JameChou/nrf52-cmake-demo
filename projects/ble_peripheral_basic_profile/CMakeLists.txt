@@ -129,11 +129,8 @@ add_custom_target(FLASH_SOFTDEVICE ALL
 ##############################################################################
 include_directories("${CMAKE_SOURCE_DIR}/include")
 list(APPEND SOURCE_FILES
-        "${CMAKE_SOURCE_DIR}/components/tri_app_ble.c"
-        "${CMAKE_SOURCE_DIR}/components/tri_app_leds.c"
-        "${CMAKE_SOURCE_DIR}/components/tri_app_log.c"
-        "${CMAKE_SOURCE_DIR}/components/tri_app_power.c"
-        "${CMAKE_SOURCE_DIR}/components/tri_app_timer.c"
+        "${CMAKE_SOURCE_DIR}/components/my_ble_hrs.c"
+        "${CMAKE_SOURCE_DIR}/components/my_ble_dis.c"
 )
 ##############################################################################
 # SOURCE CODE

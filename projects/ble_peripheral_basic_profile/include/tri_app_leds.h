@@ -1,9 +1,0 @@
-#ifndef BLE_APP_BLE_PERIPHERAL_BASIC_TRI_APP_LEDS_H
-#define BLE_APP_BLE_PERIPHERAL_BASIC_TRI_APP_LEDS_H
-
-/**
- * 初始化led相关
- */
-void leds_init(void);
-
-#endif //BLE_APP_BLE_PERIPHERAL_BASIC_TRI_APP_LEDS_H
