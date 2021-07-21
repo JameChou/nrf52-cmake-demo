@@ -27,8 +27,8 @@
 #include "my_ble_rsc.h"
 #include "my_ble_dis.h"
 
-#define MANUFACTURER_NAME               "TimingFit"                           // 制造商名称字符串
-#define DEVICE_NAME                     "Speed&Cadence Sensor"             // 设备名称字符串
+#define MANUFACTURER_NAME               "TimingFit"                        // 制造商名称字符串
+#define DEVICE_NAME                     "RSC Sensor"                       // 设备名称字符串
 #define MIN_CONN_INTERVAL               MSEC_TO_UNITS(100, UNIT_1_25_MS)   // 最小连接间隔 (0.1 秒)
 #define MAX_CONN_INTERVAL               MSEC_TO_UNITS(200, UNIT_1_25_MS)   // 最大连接间隔 (0.2 秒)
 #define SLAVE_LATENCY                   0                                  // 从机延迟

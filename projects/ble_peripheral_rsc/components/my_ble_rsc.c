@@ -2,6 +2,7 @@
 #if NRF_MODULE_ENABLED(BLE_MY_RSC)
 #include "my_ble_rsc.h"
 #include <string.h>
+#include <nrf_log.h>
 #include "ble_srv_common.h"
 
 //操作码长度：1个字节
@@ -165,7 +166,10 @@ uint32_t ble_rsc_measurement_send(ble_rsc_t * p_rsc, uint16_t speed, uint16_t ca
             flags |= RSC_FLAG_IS_RUNNING;
         }
 
-        uint16_t speed_m_s_256 = speed * 1000 / 3600 / 256.0;
+        uint16_t speed_m_s_256 = (speed * 1000.0 / 3600) * 256;
+
+        NRF_LOG_INFO("The speed value is:");
+        NRF_LOG_INFO(speed);
 
         rsc_data[0] = flags;
         rsc_data[1] = speed_m_s_256;
