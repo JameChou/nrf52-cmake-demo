@@ -3,7 +3,7 @@
 ##############################################################################
 cmake_minimum_required(VERSION 3.15)
 
-set(PROJECT_NA "ble_peripheral_basic_profile")
+set(PROJECT_NA "ppi_signal")
 project(ble_app_${PROJECT_NA} C ASM)
 
 # set build type = Debug mode
@@ -28,7 +28,6 @@ set(CMAKE_MODULE_PATH "../../cmake")
 
 include("../../cmake/nRF5x.cmake")
 include("../../cmake/arm-gcc-toolchain.cmake")
-
 
 ##############################################################################
 # nRF5x setup (Comment/Uncomment libraries to use)
@@ -126,14 +125,6 @@ add_custom_target(FLASH_SOFTDEVICE ALL
 #                 "${NRF5_SDK_PATH}/components/ble/nrf_ble_scan/nrf_ble_scan.c"               
 #         )
 
-##############################################################################
-#  application components setup
-##############################################################################
-include_directories("${CMAKE_SOURCE_DIR}/include")
-list(APPEND SOURCE_FILES
-        "${CMAKE_SOURCE_DIR}/components/my_ble_rsc.c"
-        "${CMAKE_SOURCE_DIR}/components/my_ble_dis.c"
-)
 ##############################################################################
 # SOURCE CODE
 ##############################################################################

@@ -19,7 +19,7 @@ set(CMAKE_C_STANDARD 99)
 # You must set these variables with your own path
 set(NRF_TARGET 						"nrf52")	# nrf51 or nrf52
 set(ARM_NONE_EABI_TOOLCHAIN_PATH 	                "/opt/nordic/ncs/v1.5.1/toolchain") 	# Path to root folder
-set(NRF5_SDK_PATH 					"/Users/james/nRF5_SDK_17.0.2_d674dde")	# Path to root folder
+set(NRF5_SDK_PATH 					"/Users/jameschow/software/nRF5_SDK_17.0.2_d674dde")	# Path to root folder
 set(NRFJPROG 						"/usr/local/bin/nrfjprog")	# Path to .bin file
 #set(MERGE_HEX 						"/opt/SEGGER/Toolchain/mergehex/mergehex")
 
