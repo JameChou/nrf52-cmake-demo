@@ -105,7 +105,7 @@ void ble_rsc_on_ble_evt(ble_evt_t const * p_ble_evt, void * p_context);
  * @param cadence 步频
  * @return NRF_SUCCESS on success, otherwise an error code.
  */
-uint32_t ble_rsc_measurement_send(ble_rsc_t * p_rsc, uint16_t speed, uint16_t cadence);
+uint32_t ble_rsc_measurement_send(ble_rsc_t * p_rsc, double speed, uint16_t cadence);
 
 #ifdef __cplusplus
 }

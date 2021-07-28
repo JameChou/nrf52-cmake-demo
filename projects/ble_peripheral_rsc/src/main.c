@@ -75,7 +75,7 @@ BLE_RSC_DEF(m_rsc);
 //定义服务UUID列表
 static ble_uuid_t m_adv_uuids[] =
         {
-                {BLE_UUID_HEART_RATE_SERVICE,           BLE_UUID_TYPE_BLE},//心率服务UUID
+                {BLE_UUID_RUNNING_SPEED_AND_CADENCE,    BLE_UUID_TYPE_BLE},//心率服务UUID
                 {BLE_UUID_DEVICE_INFORMATION_SERVICE,   BLE_UUID_TYPE_BLE} //设备信息服务UUID
         };
 
@@ -89,6 +89,7 @@ nrf_ppi_channel_t ppi_channel_2;
 #define SENSOR_PORT_2 03
 
 bool is_complete = false;
+uint32_t pulse_width_us = 0;
 
 const nrfx_timer_t RSC_TIMER = NRFX_TIMER_INSTANCE(1);
 
@@ -99,8 +100,7 @@ void rsc_timer_interrupts(nrf_timer_event_t event_type, void * p_context);
 /**
  * ppi初始化数据
  */
-void ppi_config(void)
-{
+void ppi_config(void) {
     ret_code_t err_code = NRF_SUCCESS;
 
     uint32_t   timer_stop_task_addr;
@@ -151,15 +151,18 @@ void ppi_config(void)
     err_code = nrfx_ppi_channel_assign(ppi_channel_2, gpiote_sensor_2_in_event_addr, timer_stop_task_addr);
     APP_ERROR_CHECK(err_code);
 
-    // 使能timer
+
     nrfx_timer_enable(&RSC_TIMER);
     nrfx_timer_pause(&RSC_TIMER);
     nrfx_timer_clear(&RSC_TIMER);
+
+    nrf_gpio_cfg_output(LED_3);
+    nrf_gpio_pin_set(LED_3);
 }
+
 
 void sensor_1_in_gpiote_interrupt_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 {
-    // sensor1 开始处理
     if (is_complete) {
         is_complete = false;
 
@@ -170,15 +173,23 @@ void sensor_1_in_gpiote_interrupt_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_pola
 
 void sensor_2_in_gpiote_interrupt_handler(nrfx_gpiote_pin_t pin, nrf_gpiote_polarity_t action)
 {
-    is_complete = true;
     NRF_TIMER1->TASKS_CAPTURE[1] = 1;
-    uint32_t pulse_width_us = NRF_TIMER1->CC[1];
+    pulse_width_us = NRF_TIMER1->CC[1];
     nrfx_timer_pause(&RSC_TIMER);
     NRF_LOG_INFO("width us is %u", pulse_width_us);
+    is_complete = true;
 }
 
 void rsc_timer_interrupts(nrf_timer_event_t event_type, void * p_context)
 {
+    switch (event_type) {
+        case NRF_TIMER_EVENT_COMPARE0:
+            nrf_gpio_pin_toggle(LED_3);
+            pulse_width_us = 0;
+            break;
+        default:
+            break;
+    }
 }
 
 //GAP参数初始化，该函数配置需要的GAP参数，包括设备名称，外观特征、首选连接参数
@@ -198,7 +209,7 @@ static void gap_params_init(void)
     APP_ERROR_CHECK(err_code);
 
     //设置外观特征:心率腕带
-    err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_HEART_RATE_SENSOR_HEART_RATE_BELT);
+    err_code = sd_ble_gap_appearance_set(BLE_APPEARANCE_GENERIC_RUNNING_WALKING_SENSOR);
     APP_ERROR_CHECK(err_code);
 
     //设置首选连接参数，设置前先清零gap_conn_params
@@ -484,11 +495,16 @@ static void power_management_init(void)
 static void heart_rate_timeout_handler(void * p_context)
 {
     ret_code_t      err_code;
-    uint16_t        speed;
+    double          speed;
     uint16_t        cadence;
 
     UNUSED_PARAMETER(p_context);
-    speed = 20;
+
+    if (pulse_width_us == 0) {
+        speed = 0;
+    } else {
+        speed = 0.04 / (pulse_width_us / 1000.0 / 1000) * 3.6;
+    }
     cadence = 160;
     //发送心率测量值
     err_code = ble_rsc_measurement_send(&m_rsc, speed, cadence);

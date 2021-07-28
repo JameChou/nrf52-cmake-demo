@@ -152,7 +152,7 @@ uint32_t ble_rsc_init(ble_rsc_t * p_rsc, const ble_rsc_init_t * p_rsc_init)
 }
 
 // 发送速度数据以及步频数据
-uint32_t ble_rsc_measurement_send(ble_rsc_t * p_rsc, uint16_t speed, uint16_t cadence)
+uint32_t ble_rsc_measurement_send(ble_rsc_t * p_rsc, double speed, uint16_t cadence)
 {
     uint32_t err_code;
     uint8_t flags = 0x00;
@@ -166,10 +166,9 @@ uint32_t ble_rsc_measurement_send(ble_rsc_t * p_rsc, uint16_t speed, uint16_t ca
             flags |= RSC_FLAG_IS_RUNNING;
         }
 
-        uint16_t speed_m_s_256 = (speed * 1000.0 / 3600) * 256;
+        uint16_t speed_m_s_256 = (speed * 1000 / 3600) * 256;
 
-        NRF_LOG_INFO("The speed value is:");
-        NRF_LOG_INFO(speed);
+        NRF_LOG_INFO("The speed value is: %f", speed);
 
         rsc_data[0] = flags;
         rsc_data[1] = speed_m_s_256;
