@@ -45,6 +45,7 @@ add_definitions(-DNRF52 -DNRF52832 -DNRF52832_XXAA -DNRF52_PAN_74 -DNRF52_PAN_64
 * [BLE基本功能](./projects/ble_peripheral_basic)
 * [BLE广播](./projects/ble_peripheral_adv)
 * [BLE标准Profile](./projects/ble_peripheral_basic_profile)
+* [BLE RSC](./projects/ble_peripheral_rsc)
 
 ---- 主机(center)
 

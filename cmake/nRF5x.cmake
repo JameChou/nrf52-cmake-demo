@@ -598,3 +598,11 @@ macro(nRF5x_addSAADC)
         "${NRF5_SDK_PATH}/modules/nrfx/drivers/src/nrfx_saadc.c"
     )
 endmacro(nRF5x_addSAADC)
+
+macro(nRF5x_addTWI)
+    list(APPEND SDK_SOURCE_FILES
+        "${NRF5_SDK_PATH}/modules/nrfx/drivers/src/nrfx_twi.c"
+        "${NRF5_SDK_PATH}/integration/nrfx/legacy/nrf_drv_twi.c"
+        "${NRF5_SDK_PATH}/modules/nrfx/drivers/src/nrfx_twim.c"
+    )
+endmacro(nRF5x_addTWI)
