@@ -7,6 +7,9 @@
 #define TWI_SCL_M           22         //I2C SCL引脚
 #define TWI_SDA_M           23         //I2C SDA引脚
 
+#define MPU6050
+
+#define DEFAULT_MPU_HZ      (100)
 
 #define MPU6050_ADDRESS_LEN  1         //MPU6050地址长度
 #define MPU6050_ADDRESS     (0xD0>>1)  //MPU6050地址
@@ -103,6 +106,10 @@ bool mpu6050_verify_product_id(void);
 bool MPU6050_ReadGyro(int16_t *pGYRO_X , int16_t *pGYRO_Y , int16_t *pGYRO_Z );
 bool MPU6050_ReadAcc( int16_t *pACC_X , int16_t *pACC_Y , int16_t *pACC_Z );
 
+bool i2c_write_len(uint8_t addr, uint8_t reg, uint8_t len, uint8_t *buf);
+bool i2c_read_len(uint8_t addr, uint8_t reg, uint8_t len, uint8_t *buf);
+
+uint8_t mpu_dmp_init(void);
 
 
 #endif //BLE_APP_TWI_I2C_MPU6050_H

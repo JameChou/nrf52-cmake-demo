@@ -38,6 +38,7 @@ add_definitions(-DNRF52 -DNRF52832 -DNRF52832_XXAA -DNRF52_PAN_74 -DNRF52_PAN_64
 * [SAADC非阻塞式双缓存](./projects/saadc_unblock_cache)
 * [SAADC门限监测](./projects/saadc_limit)
 * [SOC温度监测](./projects/soc_temp)
+* [MPU6050 DMP(TWI&I2C)](./projects/i2c_mp6050)
 
 -- BLE相关
 

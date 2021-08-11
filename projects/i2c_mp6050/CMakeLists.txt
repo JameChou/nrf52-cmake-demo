@@ -133,6 +133,8 @@ add_custom_target(FLASH_SOFTDEVICE ALL
 include_directories("${CMAKE_SOURCE_DIR}/include")
 list(APPEND SOURCE_FILES
         "${CMAKE_SOURCE_DIR}/component/mpu6050.c"
+        "${CMAKE_SOURCE_DIR}/component/inv_mpu.c"
+        "${CMAKE_SOURCE_DIR}/component/inv_mpu_dmp_motion_driver.c"
 )
 ##############################################################################
 # SOURCE CODE

@@ -4,9 +4,7 @@
 #include "nrf_log_default_backends.h"
 #include "nrf_log_ctrl.h"
 #include "nrf_log.h"
-#include "nrf_drv_twi.h"
 #include "boards.h"
-
 
 #include "mpu6050.h"
 
@@ -40,6 +38,13 @@ int main(void)
     NRF_LOG_INFO("mpu6050 example started");
 
     bsp_board_leds_on();
+
+    while (mpu_dmp_init()) {
+        NRF_LOG_INFO("mpu6050 init error\r\n");
+        nrf_delay_ms(1000);
+    }
+
+    bsp_board_leds_off();
 
     while (true) {
         if (MPU6050_ReadAcc(&acc_value[0], &acc_value[1], &acc_value[2])) {
